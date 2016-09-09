@@ -1,9 +1,11 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
+const precss = require('precss');
+const autoprefixer = require('autoprefixer');
 
 
-var BUILD_DIR = path.resolve(__dirname + '/build');
-var APP_DIR = path.resolve(__dirname + '/app');
+const BUILD_DIR = path.resolve(__dirname + '/build');
+const APP_DIR = path.resolve(__dirname + '/app');
 
 var config = {
     entry: APP_DIR + '/index.jsx',
@@ -18,15 +20,25 @@ var config = {
         contentBase: BUILD_DIR,
         port: 3000
     },
+    postcss: function () {
+        return [precss, autoprefixer]
+    },
     module: {
-        loaders: [{
-            test: /\.jsx/,
-            include: APP_DIR,
-            loader: 'babel',
-            query: {
-                presets: ['es2015', 'react']
+        loaders: [
+            {
+                test: /\.jsx/,
+                include: APP_DIR,
+                loader: 'babel',
+                query: {
+                    presets: ['es2015', 'react']
+                }
+            },
+            {
+                test:   /\.css$/,
+                loader: "style-loader!css-loader!postcss-loader"
             }
-        }]
+
+        ]
     }
 };
 

@@ -2,10 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Perf from 'react-addons-perf';
 import {createGame, reveal, markMine} from './minesweeper';
+import {Cell} from './cell.jsx';
 
-const UNREVEALED_CELL = '?';
-const MINE_CELL = ':(';
-const MARKED_CELL = '*';
 window.Perf = Perf;
 
 class Board extends React.Component {
@@ -43,7 +41,6 @@ class Board extends React.Component {
 
     handleRightClick(row, col, e) {
         e.preventDefault();
-        console.log('mark as mine');
         const currentGame = this.state.game;
         const newGame = markMine(currentGame, row, col);
         this.history.push(currentGame);
@@ -77,41 +74,15 @@ class Board extends React.Component {
 
 
 class Row extends React.Component {
+
+    shouldComponentUpdate (nextProps, nextState) {
+        return this.props.row == nextProps.row;
+    }
+
     render() {
         const rowKey = this.props.rowKey;
-        const cells = this.props.row.map( (cell, i) => <Cell cell={cell} key={i} colKey={i} rowKey={rowKey} handleClick={this.props.handleClick} handleRightClick={this.props.handleRightClick}/>);
+        const cells = this.props.row.map( (cell, i) => <Cell cell={cell} key={i} colKey={i} rowKey={rowKey} {...this.props}/>);
         return <div>{cells}</div>;
-    }
-}
-
-
-class Cell extends React.Component {
-    componentWillUpdate (nextProps, nextState) {
-        if (this.state == nextState) {
-            return false;
-        }
-        console.log('updated');
-        return true;
-    }
-
-    render() {
-        let text = UNREVEALED_CELL;
-        let data = this.props.cell;
-        const row = this.props.rowKey;
-        const col = this.props.colKey;
-        let className = "cell";
-        if (data.get('isMarked')) {
-            text = MARKED_CELL;
-        } else if (data.get('isRevealed')) {
-            className += ' revealed';
-            data.get('isMine') ? text = MINE_CELL : text = data.get('mines');
-        }
-        return (
-            <button className={className} 
-                    onClick={() => this.props.handleClick(row, col)}
-                    onContextMenu={e => this.props.handleRightClick(row, col, e)}>
-                {text}
-            </button>);
     }
 }
 

@@ -1,7 +1,8 @@
 const immutable = require('immutable');
 const _ = require('lodash');
 
-const delta = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+const delta = [[-1, -1], [-1, 0], [-1, 1], [0, -1],
+            [0, 1], [1, -1], [1, 0], [1, 1]];
 
 
 function createGame(rows, cols, mines) {
