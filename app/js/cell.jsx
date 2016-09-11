@@ -1,8 +1,12 @@
 import React from 'react';
 
-const UNREVEALED_CELL = '?';
-const MINE_CELL = ':(';
-const MARKED_CELL = '*';
+
+export const SYMBOLS = {
+    UNREVEALED_CELL: '?',
+    MINE_CELL: ':(',
+    MARKED_CELL: '*'
+};
+
 
 export class Cell extends React.Component {
 
@@ -11,16 +15,16 @@ export class Cell extends React.Component {
     }
 
     render() {
-        let text = UNREVEALED_CELL;
+        let text = SYMBOLS.UNREVEALED_CELL;
         let data = this.props.cell;
         const row = this.props.rowKey;
         const col = this.props.colKey;
         let className = "cell";
         if (data.get('isMarked')) {
-            text = MARKED_CELL;
+            text = SYMBOLS.MARKED_CELL;
         } else if (data.get('isRevealed')) {
             className += ' revealed';
-            data.get('isMine') ? text = MINE_CELL : text = data.get('mines');
+            data.get('isMine') ? text = SYMBOLS.MINE_CELL : text = data.get('mines');
         }
         return (
             <button className={className} 
