@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register",
     "test-cov": "babel-node node_modules/istanbul/lib/cli.js --include-all-sources cover --report html _mocha -- test --recursive",
-    "build": "webpack-dev-server --content-base build/"
+    "dev": "webpack-dev-server --content-base build/",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
