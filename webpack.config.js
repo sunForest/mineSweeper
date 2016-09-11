@@ -6,9 +6,12 @@ const autoprefixer = require('autoprefixer');
 
 const BUILD_DIR = path.resolve(__dirname + '/build');
 const APP_DIR = path.resolve(__dirname + '/app');
+const JS_DIR = path.resolve(__dirname + '/app/js');
+const STYLE_DIR = path.resolve(__dirname + '/app/style');
+
 
 var config = {
-    entry: APP_DIR + '/index.jsx',
+    entry: [JS_DIR + '/index.jsx', STYLE_DIR + '/style.css'],
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js',
@@ -27,7 +30,7 @@ var config = {
         loaders: [
             {
                 test: /\.jsx/,
-                include: APP_DIR,
+                include: JS_DIR,
                 loader: 'babel',
                 query: {
                     presets: ['es2015', 'react']
@@ -35,6 +38,7 @@ var config = {
             },
             {
                 test:   /\.css$/,
+                include: STYLE_DIR,
                 loader: "style-loader!css-loader!postcss-loader"
             }
 

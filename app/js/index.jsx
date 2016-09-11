@@ -76,7 +76,7 @@ class Board extends React.Component {
 class Row extends React.Component {
 
     shouldComponentUpdate (nextProps, nextState) {
-        return this.props.row == nextProps.row;
+        return this.props.row != nextProps.row;
     }
 
     render() {
