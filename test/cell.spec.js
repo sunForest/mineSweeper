@@ -2,7 +2,7 @@ import React from 'react';
 import {expect} from 'chai';
 import immutable from 'immutable';
 import {mount, shallow } from 'enzyme';
-import {Cell} from '../app/cell';
+import {Cell} from '../app/js/cell';
 
 
 describe('Cell', () => {
