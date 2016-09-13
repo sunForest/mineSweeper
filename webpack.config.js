@@ -29,7 +29,7 @@ var config = {
     module: {
         loaders: [
             {
-                test: /\.jsx/,
+                test: /\.jsx?/,
                 include: JS_DIR,
                 loader: 'babel',
                 query: {
