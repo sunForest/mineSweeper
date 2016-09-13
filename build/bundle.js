@@ -22129,28 +22129,28 @@
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const immutable = __webpack_require__(177);
-	const _ = __webpack_require__(178);
+	'use strict';
 	
-	const delta = [[-1, -1], [-1, 0], [-1, 1], [0, -1],
-	            [0, 1], [1, -1], [1, 0], [1, 1]];
+	var immutable = __webpack_require__(177);
+	var _ = __webpack_require__(178);
 	
+	var delta = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 	
 	function createGame(rows, cols, mines) {
 	    var cells = [];
 	    var board = [];
-	    _.range(mines).forEach( () => {
-	        cells.push({isMine: true});
+	    _.range(mines).forEach(function () {
+	        cells.push({ isMine: true });
 	    });
-	    _.range(rows * cols - mines).forEach( () => {
+	    _.range(rows * cols - mines).forEach(function () {
 	        cells.push({});
 	    });
 	    cells = _.shuffle(cells);
-	    cells = cells.map( cell => {
+	    cells = cells.map(function (cell) {
 	        cell.mines = 0;
 	        return cell;
-	    })
-	    for(var i = 0; i < rows * cols; i += cols){
+	    });
+	    for (var i = 0; i < rows * cols; i += cols) {
 	        board.push(cells.slice(i, i + cols));
 	    }
 	    countMines(board, rows, cols);
@@ -22164,31 +22164,37 @@
 	}
 	
 	function countMines(board, rows, cols) {
-	    board.forEach( (row, i) => {
-	        row.forEach( (cell, j) => {
+	    board.forEach(function (row, i) {
+	        row.forEach(function (cell, j) {
 	            if (cell.isMine) {
 	                incrNeighbors(board, i, j, rows, cols);
 	            }
-	        })
+	        });
 	    });
 	}
 	
 	function neighbors(i, j, rows, cols) {
-	    return delta.map(d => [i + d[0], j + d[1]])
-	         .filter(d => d[0] >= 0 && d[0] < rows && d[1] >= 0 && d[1] < cols);
+	    return delta.map(function (d) {
+	        return [i + d[0], j + d[1]];
+	    }).filter(function (d) {
+	        return d[0] >= 0 && d[0] < rows && d[1] >= 0 && d[1] < cols;
+	    });
 	}
 	
-	function incrNeighbors(board, i, j, rows, cols){
-	    neighbors(i, j, rows, cols)
-	        .forEach(d => board[d[0]][d[1]].mines += 1);
+	function incrNeighbors(board, i, j, rows, cols) {
+	    neighbors(i, j, rows, cols).forEach(function (d) {
+	        return board[d[0]][d[1]].mines += 1;
+	    });
 	}
 	
 	function revealMines(game) {
-	    game.get('board').forEach( (row, ri) => row.forEach( (cell, ci) => {
-	        if (cell.get('isMine')) {
-	            game = game.setIn(['board', ri, ci, 'isRevealed'], true);
-	        }
-	    }));
+	    game.get('board').forEach(function (row, ri) {
+	        return row.forEach(function (cell, ci) {
+	            if (cell.get('isMine')) {
+	                game = game.setIn(['board', ri, ci, 'isRevealed'], true);
+	            }
+	        });
+	    });
 	    return game;
 	}
 	
@@ -22207,14 +22213,16 @@
 	    }
 	    var currentGame;
 	    currentGame = game.setIn(['board', i, j, 'isRevealed'], true);
-	    currentGame = currentGame.update('remaining', x => x - 1);
+	    currentGame = currentGame.update('remaining', function (x) {
+	        return x - 1;
+	    });
 	    if (currentGame.get('remaining') === currentGame.get('mines')) {
 	        return currentGame.set('hasWon', true);
 	    }
 	    if (currentGame.getIn(['board', i, j, 'mines']) == 0) {
-	        const nb = neighbors(i, j, currentGame.get('rows'), currentGame.get('cols'));
-	        nb.forEach( d => {
-	            if ( !currentGame.getIn(['board', d[0], d[1], 'isRevealed'])) {
+	        var nb = neighbors(i, j, currentGame.get('rows'), currentGame.get('cols'));
+	        nb.forEach(function (d) {
+	            if (!currentGame.getIn(['board', d[0], d[1], 'isRevealed'])) {
 	                currentGame = reveal(currentGame, d[0], d[1]);
 	            }
 	        });
@@ -22222,18 +22230,17 @@
 	    return currentGame;
 	}
 	
-	function markMine(game, i, j){
+	function markMine(game, i, j) {
 	    if (game.get('isDead') || game.get('hasWon')) {
 	        return game;
 	    }
-	    const isMarked = game.getIn(['board', i, j, 'isMarked']);
+	    var isMarked = game.getIn(['board', i, j, 'isMarked']);
 	    return game.setIn(['board', i, j, 'isMarked'], !isMarked);
 	}
 	
 	exports.createGame = createGame;
 	exports.reveal = reveal;
 	exports.markMine = markMine;
-
 
 /***/ },
 /* 177 */
