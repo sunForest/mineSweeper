@@ -24,5 +24,11 @@ describe('minesweeper', () => {
         const game = minesweeper.createGame(3, 3, 9);
         const newGame = minesweeper.reveal(game, 0, 0);
         expect(newGame.get('isDead')).to.equal(true);
-    })
+    });
+
+    it('should mark a cell as mine', () => {
+        const game = minesweeper.createGame(5, 5, 3);
+        const newGame = minesweeper.markMine(game, 0, 0);
+        expect(newGame.getIn(['board', 0, 0, 'isMarked'])).to.equal(true);
+    });
 });
