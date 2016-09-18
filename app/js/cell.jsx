@@ -17,8 +17,8 @@ export class Cell extends React.Component {
     render() {
         let text = SYMBOLS.UNREVEALED_CELL;
         let data = this.props.cell;
-        const row = this.props.rowKey;
-        const col = this.props.colKey;
+        const row = parseInt(this.props.rowKey);
+        const col = parseInt(this.props.colKey);
         let className = "cell";
         if (data.get('isMarked')) {
             text = SYMBOLS.MARKED_CELL;
