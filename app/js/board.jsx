@@ -3,6 +3,12 @@ import React from 'react';
 import {createGame, reveal, markMine} from './minesweeper';
 import {Cell} from './cell.jsx';
 
+const SMILE_FACE = "🙂";
+const NERVOUS_FACE = "😮";
+const DEAD_FACE = "😵";
+const WIN_TEXT = "You won!";
+const LOST_TEXT = "You lost :("; 
+
 export class Board extends React.Component {
 
     constructor(props) {
@@ -13,7 +19,7 @@ export class Board extends React.Component {
         const mines = parseInt(props.mines);
         this.state = {
             game : createGame(rows, cols, mines),
-            face : "🙂"
+            face : SMILE_FACE
         }
         this.handleClick = this.handleClick.bind(this);
         this.undo = this.undo.bind(this);
@@ -46,21 +52,23 @@ export class Board extends React.Component {
         e.preventDefault();
         const currentGame = this.state.game;
         const newGame = markMine(currentGame, row, col);
-        this.history.push(currentGame);
-        this.setState({
-            game: newGame
-        });
+        if (currentGame !== newGame) {
+            this.history.push(currentGame);
+            this.setState({
+                game: newGame
+            });
+        }
     }
 
     handleMouseDown(e) {
         this.setState({
-            face: "😮"
+            face: NERVOUS_FACE
         });
     }
 
     handleMouseUp(e) {
         this.setState({
-            face: "🙂"
+            face: SMILE_FACE
         });
     }
 
@@ -77,7 +85,7 @@ export class Board extends React.Component {
         if (hasWon) {
             text = 'You won!!!'
         }
-        const face = game.get('isDead') ? "😵" : this.state.face;
+        const face = game.get('isDead') ? DEAD_FACE : this.state.face;
         const rows = board.map((row, rowIndex) => {
             const cells = row.map(
                 (cell, colIndex) => {
