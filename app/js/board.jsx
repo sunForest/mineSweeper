@@ -3,11 +3,16 @@ import React from 'react';
 import {createGame, reveal, markMine} from './minesweeper';
 import {Cell} from './cell.jsx';
 
-const SMILE_FACE = "🙂";
-const NERVOUS_FACE = "😮";
-const DEAD_FACE = "😵";
-const WIN_TEXT = "You won!";
-const LOST_TEXT = "You lost :("; 
+export const FACES = {
+    SMILE: "🙂",
+    NERVOUS: "😮",
+    DEAD: "😵"
+};
+
+export const TEXTS = {
+    WON: "You won!",
+    LOST: "You lost :("
+};
 
 export class Board extends React.Component {
 
@@ -19,7 +24,7 @@ export class Board extends React.Component {
         const mines = parseInt(props.mines);
         this.state = {
             game : createGame(rows, cols, mines),
-            face : SMILE_FACE
+            face : FACES.SMILE
         }
         this.handleClick = this.handleClick.bind(this);
         this.undo = this.undo.bind(this);
@@ -62,13 +67,13 @@ export class Board extends React.Component {
 
     handleMouseDown(e) {
         this.setState({
-            face: NERVOUS_FACE
+            face: FACES.NERVOUS
         });
     }
 
     handleMouseUp(e) {
         this.setState({
-            face: SMILE_FACE
+            face: FACES.SMILE
         });
     }
 
@@ -80,12 +85,12 @@ export class Board extends React.Component {
         const remaining = game.get('remaining');
         let text = `Remaining cells: ${remaining}`;
         if (isDead) {
-            text = 'You lost.'
+            text = TEXTS.LOST;
         }
         if (hasWon) {
-            text = 'You won!!!'
+            text = TEXTS.WIN;
         }
-        const face = game.get('isDead') ? DEAD_FACE : this.state.face;
+        const face = game.get('isDead') ? FACES.DEAD : this.state.face;
         const rows = board.map((row, rowIndex) => {
             const cells = row.map(
                 (cell, colIndex) => {
@@ -112,7 +117,7 @@ export class Board extends React.Component {
                     </tbody>
                 </table>
                 <p>{text}</p>
-                <button onClick={this.undo}>Undo</button>
+                <button id="undo-btn" onClick={this.undo}>Undo</button>
             </div>);
     }
 }
